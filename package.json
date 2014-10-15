@@ -1,0 +1,24 @@
+{
+  "name": "react-json-inspector",
+  "version": "1.0.0",
+  "description": "React JSON inspector component",
+  "main": "json-inspector.js",
+  "scripts": {
+    "dev": "http-server example/ & watchify example/app.js -o example/app.compiled.js -v & wait"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^6.1.0",
+    "http-server": "^0.7.2",
+    "react": "^0.11.2",
+    "reactify": "^0.14.0",
+    "watchify": "^2.0.0"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "dependencies": {}
+}
