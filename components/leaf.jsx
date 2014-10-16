@@ -2,8 +2,10 @@ var React = require('react');
 
 var Leaf = React.createClass({
     getInitialState: function() {
+        var p = this.props;
+
         return {
-            expanded: !!this.props.expanded
+            expanded: p.isExpanded(p.data, p.label, p.prefix)
         };
     },
     render: function() {
@@ -28,27 +30,30 @@ var Leaf = React.createClass({
         }
     },
     renderChildren: function() {
-        var data = this.props.data;
+        var p = this.props;
+        var childPrefix = p.prefix + '.' + p.label;
 
         if (!this.state.expanded) {
             return null;
         }
 
-        switch (type(data)) {
+        switch (type(p.data)) {
             case 'Array':
-                return data.map(function(value, index) {
-                    return <Leaf data={ value } label={ index } />;
+                return p.data.map(function(value, index) {
+                    return <Leaf data={ value } label={ index } prefix={ childPrefix } isExpanded={ p.isExpanded } key={ index } />;
                 });
             case 'Object':
-                return Object.keys(data).map(function(key) {
-                    return <Leaf data={ data[key] } label={ key } />;
+                return Object.keys(p.data).map(function(key) {
+                    return <Leaf data={ p.data[key] } label={ key } prefix={ childPrefix } isExpanded={ p.isExpanded } key={ key } />;
                 });
             default:
                 return null;
         }
     },
     toggle: function() {
-        this.setState({ expanded: !this.state.expanded });
+        if (!isPrimitive(this.props.data)) {
+            this.setState({ expanded: !this.state.expanded });
+        }
     }
 });
 
