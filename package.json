@@ -3,24 +3,35 @@
   "version": "1.0.0",
   "description": "React JSON inspector component",
   "main": "json-inspector.js",
-  "scripts": {
-    "dev": "http-server example/ & watchify example/app.js -o example/app.compiled.js -v & wait"
+  "author": {
+    "name": "Aziz Yuldoshev",
+    "email": "yuldoshev.aziz@gmail.com",
+    "url": "http://lapple.me"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Lapple/react-json-inspector.git"
+  },
   "license": "MIT",
+  "dependencies": {
+    "flat": "^1.3.0",
+    "react": "^0.11.2"
+  },
   "devDependencies": {
     "browserify": "^6.1.0",
     "http-server": "^0.7.2",
     "reactify": "^0.14.0",
     "watchify": "^2.0.0"
   },
+  "keywords": [
+    "react-component"
+  ],
+  "scripts": {
+    "dev": "http-server example/ & watchify example/app.js -o example/app.compiled.js -v & wait"
+  },
   "browserify": {
     "transform": [
       "reactify"
     ]
-  },
-  "dependencies": {
-    "flat": "^1.3.0",
-    "react": "^0.11.2"
   }
 }
