@@ -11,7 +11,7 @@ var Leaf = React.createClass({
     render: function() {
         return <div style={ { paddingLeft: '10px' } }>
             <div onClick={ this.toggle }>
-                { this.props.label }:
+                { this.props.formatter(this.props.label.toString()) }:
                 { this.renderTitle() }
             </div>
             { this.renderChildren() }
@@ -26,7 +26,7 @@ var Leaf = React.createClass({
             case 'Object':
                 return '{} ' + Object.keys(data).length;
             default:
-                return String(data);
+                return this.props.formatter(data.toString());
         }
     },
     renderChildren: function() {
@@ -40,11 +40,11 @@ var Leaf = React.createClass({
         switch (type(p.data)) {
             case 'Array':
                 return p.data.map(function(value, index) {
-                    return <Leaf data={ value } label={ index } prefix={ childPrefix } isExpanded={ p.isExpanded } key={ index } />;
+                    return <Leaf data={ value } label={ index } prefix={ childPrefix } isExpanded={ p.isExpanded } formatter={ p.formatter } key={ index } />;
                 });
             case 'Object':
                 return Object.keys(p.data).map(function(key) {
-                    return <Leaf data={ p.data[key] } label={ key } prefix={ childPrefix } isExpanded={ p.isExpanded } key={ key } />;
+                    return <Leaf data={ p.data[key] } label={ key } prefix={ childPrefix } isExpanded={ p.isExpanded } formatter={ p.formatter } key={ key } />;
                 });
             default:
                 return null;

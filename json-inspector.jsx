@@ -2,10 +2,9 @@ var React = require('react');
 
 var Leaf = require('./lib/leaf.jsx');
 var SearchBar = require('./lib/search-bar.jsx');
-var searcher = require('./lib/searcher.js');
+var Highlighter = require('./lib/highlighter.jsx');
 
-var ROOT_LABEL = 'root';
-var PATH_DELIMITER = '.';
+var searcher = require('./lib/searcher.js');
 
 var Inspector = React.createClass({
     getInitialState: function() {
@@ -17,12 +16,12 @@ var Inspector = React.createClass({
     render: function() {
         return <div>
             <SearchBar onChange={ this.search } />
-            <Leaf data={ this.props.data } label={ ROOT_LABEL } prefix='' isExpanded={ this.isExpanded } key={ this.state.query } />
+            <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } key={ this.state.query } formatter={ this.formatter } />
         </div>;
     },
     isExpanded: function(value, label, prefix) {
         var query = this.state.query;
-        var path = prefix + PATH_DELIMITER + label;
+        var path = prefix + '.' + label;
 
         if (!prefix) {
             return true;
@@ -40,6 +39,9 @@ var Inspector = React.createClass({
         }
 
         this.setState({ query: query });
+    },
+    formatter: function(string) {
+        return <Highlighter string={ string } query={ this.state.query } />;
     }
 });
 
