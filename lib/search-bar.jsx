@@ -5,7 +5,7 @@ var SearchBar = React.createClass({
     getDefaultProps: function() {
         return {
             minlength: 2,
-            timeout: 100,
+            timeout: 300,
             onChange: function() {}
         };
     },
