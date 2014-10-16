@@ -3,7 +3,7 @@ var React = require('react');
 var SearchBar = React.createClass({
     getDefaultProps: function() {
         return {
-            minlength: 3,
+            minlength: 2,
             onChange: function() {}
         };
     },
