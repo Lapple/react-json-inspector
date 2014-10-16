@@ -16,7 +16,7 @@ var Inspector = React.createClass({
     render: function() {
         return <div>
             <SearchBar onChange={ this.search } />
-            <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } key={ this.state.query } formatter={ this.formatter } />
+            <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
         </div>;
     },
     isExpanded: function(value, label, prefix) {

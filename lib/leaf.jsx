@@ -1,5 +1,8 @@
 var React = require('react');
 
+var ARRAY_TYPE = 'Array';
+var OBJECT_TYPE = 'Object';
+
 var Leaf = React.createClass({
     getInitialState: function() {
         var p = this.props;
@@ -11,7 +14,7 @@ var Leaf = React.createClass({
     render: function() {
         return <div style={ { paddingLeft: '10px' } }>
             <div onClick={ this.toggle }>
-                { this.props.formatter(this.props.label.toString()) }:
+                { this.props.format(this.props.label.toString()) }:
                 { this.renderTitle() }
             </div>
             { this.renderChildren() }
@@ -21,12 +24,12 @@ var Leaf = React.createClass({
         var data = this.props.data;
 
         switch (type(data)) {
-            case 'Array':
+            case ARRAY_TYPE:
                 return '[] ' + data.length;
-            case 'Object':
+            case OBJECT_TYPE:
                 return '{} ' + Object.keys(data).length;
             default:
-                return this.props.formatter(data.toString());
+                return this.props.format(data.toString());
         }
     },
     renderChildren: function() {
@@ -38,13 +41,27 @@ var Leaf = React.createClass({
         }
 
         switch (type(p.data)) {
-            case 'Array':
+            case ARRAY_TYPE:
                 return p.data.map(function(value, index) {
-                    return <Leaf data={ value } label={ index } prefix={ childPrefix } isExpanded={ p.isExpanded } formatter={ p.formatter } key={ index } />;
+                    return Leaf({
+                        data: value,
+                        label: index,
+                        prefix: childPrefix,
+                        isExpanded: p.isExpanded,
+                        format: p.format,
+                        key: index
+                    });
                 });
-            case 'Object':
+            case OBJECT_TYPE:
                 return Object.keys(p.data).map(function(key) {
-                    return <Leaf data={ p.data[key] } label={ key } prefix={ childPrefix } isExpanded={ p.isExpanded } formatter={ p.formatter } key={ key } />;
+                    return Leaf({
+                        data: p.data[key],
+                        label: key,
+                        prefix: childPrefix,
+                        isExpanded: p.isExpanded,
+                        format: p.format,
+                        key: key
+                    });
                 });
             default:
                 return null;
@@ -63,7 +80,7 @@ function type(object) {
 
 function isPrimitive(object) {
     var t = type(object);
-    return t !== 'Array' && t !== 'Object';
+    return t !== ARRAY_TYPE && t !== OBJECT_TYPE;
 }
 
 module.exports = Leaf;
