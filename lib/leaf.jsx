@@ -12,7 +12,7 @@ var Leaf = React.createClass({
         };
     },
     render: function() {
-        return <div style={ { paddingLeft: '10px' } }>
+        return <div style={ { paddingLeft: '10px' } } id={ 'leaf-' + this.getCurrentPath() }>
             <div onClick={ this.toggle }>
                 { this.props.format(this.props.label.toString()) }:
                 { this.renderTitle() }
@@ -34,7 +34,7 @@ var Leaf = React.createClass({
     },
     renderChildren: function() {
         var p = this.props;
-        var childPrefix = p.prefix + '.' + p.label;
+        var childPrefix = this.getCurrentPath();
 
         if (!this.state.expanded) {
             return null;
@@ -66,6 +66,9 @@ var Leaf = React.createClass({
             default:
                 return null;
         }
+    },
+    getCurrentPath: function() {
+        return this.props.prefix + '.' + this.props.label;
     },
     toggle: function() {
         if (!isPrimitive(this.props.data)) {

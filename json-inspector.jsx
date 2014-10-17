@@ -6,16 +6,20 @@ var Highlighter = require('./lib/highlighter.jsx');
 
 var searcher = require('./lib/searcher.js');
 
+var DEFAULT_JUMP_POSITION = -1;
+var SEARCH_JUMP_OFFSET = 30 // px;
+
 var Inspector = React.createClass({
     getInitialState: function() {
         return {
             query: null,
-            flatdata: null
+            flatdata: null,
+            jumpPosition: DEFAULT_JUMP_POSITION
         };
     },
     render: function() {
         return <div>
-            <SearchBar onChange={ this.search } />
+            <SearchBar onChange={ this.search } onEnter={ this.jump } />
             <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
         </div>;
     },
@@ -27,22 +31,46 @@ var Inspector = React.createClass({
             return true;
         }
 
-        if (query && this.state.searcher(query).hasOwnProperty(path)) {
+        if (query && this.state.searcher(query).parents.hasOwnProperty(path)) {
             return true;
         }
 
         return false;
     },
     search: function(query) {
-        if (!this.state.searcher) {
-            this.setState({ searcher: searcher(this.props.data) });
-        }
-
-        this.setState({ query: query });
+        this.setState({
+            query: query,
+            jumpPosition: DEFAULT_JUMP_POSITION,
+            searcher: searcher(this.props.data)
+        });
+    },
+    jump: function() {
+        this.setState({
+            jumpPosition: this.state.jumpPosition + 1
+        });
     },
     formatter: function(string) {
         return <Highlighter string={ string } query={ this.state.query } />;
+    },
+    componentWillUpdate: function(p, s) {
+        if (s.query && s.jumpPosition !== DEFAULT_JUMP_POSITION) {
+            var matches = Object.keys(s.searcher(s.query).matches);
+            var position = s.jumpPosition % matches.length;
+
+            scrollTo(leafElement(matches[position]));
+        }
     }
 });
+
+function leafElement(path) {
+    return document.getElementById('leaf-' + path);
+}
+
+function scrollTo(el) {
+    var box = el.getBoundingClientRect();
+    var body = document.body;
+
+    body.scrollTop = (window.pageYOffset || body.scrollTop) + box.top - SEARCH_JUMP_OFFSET;
+}
 
 module.exports = Inspector;
