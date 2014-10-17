@@ -12,8 +12,9 @@ var SEARCH_JUMP_OFFSET = 30 // px;
 var Inspector = React.createClass({
     getDefaultProps: function() {
         return {
-            className: '',
-            search: true
+            data: null,
+            search: true,
+            className: ''
         };
     },
     getInitialState: function() {
