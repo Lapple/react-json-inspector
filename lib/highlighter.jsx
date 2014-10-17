@@ -18,7 +18,7 @@ var Highlighter = React.createClass({
             {
                 p.string.split(p.query).map(function(part, index) {
                     return <span key={ index }>
-                        { index !== 0 ? <span style={ { background: '#ff0' } }>{ p.query }</span> : null }
+                        { index !== 0 ? <span className='json-inspector__hl'>{ p.query }</span> : null }
                         { part }
                     </span>;
                 })

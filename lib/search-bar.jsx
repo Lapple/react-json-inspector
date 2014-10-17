@@ -14,6 +14,7 @@ var SearchBar = React.createClass({
     },
     render: function() {
         return <input
+            className='json-inspector__search'
             type='text'
             placeholder='Search'
             ref='query'

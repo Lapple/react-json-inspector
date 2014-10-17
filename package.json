@@ -29,7 +29,7 @@
     "react-component"
   ],
   "scripts": {
-    "dev": "http-server example/ & watchify example/app.js -o example/app.compiled.js -v & wait"
+    "dev": "http-server . & watchify example/app.js -o example/app.compiled.js -v & wait"
   },
   "browserify": {
     "transform": [

@@ -12,24 +12,31 @@ var Leaf = React.createClass({
         };
     },
     render: function() {
-        return <div style={ { paddingLeft: '10px' } } id={ 'leaf-' + this.getCurrentPath() }>
-            <div onClick={ this.toggle }>
+        return <div className='json-inspector__leaf' id={ 'leaf-' + this.getCurrentPath() }>
+            <span className='json-inspector__key' onClick={ this.toggle }>
                 { this.props.format(this.props.label.toString()) }:
-                { this.renderTitle() }
-            </div>
+            </span>
+            { this.renderTitle() }
             { this.renderChildren() }
         </div>;
     },
     renderTitle: function() {
         var data = this.props.data;
+        var keyType = type(data);
 
-        switch (type(data)) {
+        switch (keyType) {
             case ARRAY_TYPE:
-                return '[] ' + data.length;
+                return <span className='json-inspector__value json-inspector__value_helper'>
+                    { '[] ' + items(data.length) }
+                </span>;
             case OBJECT_TYPE:
-                return '{} ' + Object.keys(data).length;
+                return <span className='json-inspector__value json-inspector__value_helper'>
+                    { '{} ' + items(Object.keys(data).length) }
+                </span>;
             default:
-                return this.props.format(data.toString());
+                return <span className={ 'json-inspector__value json-inspector__value_' + keyType.toLowerCase() }>
+                    { this.props.format(String(data)) }
+                </span>;
         }
     },
     renderChildren: function() {
@@ -84,6 +91,10 @@ function type(object) {
 function isPrimitive(object) {
     var t = type(object);
     return t !== ARRAY_TYPE && t !== OBJECT_TYPE;
+}
+
+function items(count) {
+    return count + (count > 1 ? ' items' : ' item');
 }
 
 module.exports = Leaf;

@@ -1,0 +1,39 @@
+.json-inspector {
+    font: 14px/1.4 Consolas, monospace;
+}
+
+.json-inspector__leaf {
+    padding-left: 10px;
+}
+
+.json-inspector__value {
+    margin-left: 5px;
+}
+
+.json-inspector__key {
+    cursor: pointer;
+    color: #505050;
+}
+
+.json-inspector__value_helper,
+.json-inspector__value_null {
+    color: #b0b0b0;
+}
+
+.json-inspector__value_string {
+    color: #798953;
+}
+
+.json-inspector__value_boolean {
+    color: #75b5aa;
+}
+
+.json-inspector__value_number {
+    color: #d28445;
+}
+
+.json-inspector__hl {
+    background: #ff0;
+    box-shadow: 0 -1px 0 2px #ff0;
+    border-radius: 2px;
+}
