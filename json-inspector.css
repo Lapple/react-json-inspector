@@ -10,6 +10,13 @@
     margin-left: 5px;
 }
 
+.json-inspector__search {
+    display: block;
+    min-width: 300px;
+    margin: 0 0 10px;
+    padding: 2px;
+}
+
 .json-inspector__key {
     cursor: pointer;
     color: #505050;

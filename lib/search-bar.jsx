@@ -15,7 +15,7 @@ var SearchBar = React.createClass({
     render: function() {
         return <input
             className='json-inspector__search'
-            type='text'
+            type='search'
             placeholder='Search'
             ref='query'
             onInput={ debounce(this.update, this.props.timeout) }

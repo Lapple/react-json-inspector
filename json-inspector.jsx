@@ -12,7 +12,8 @@ var SEARCH_JUMP_OFFSET = 30 // px;
 var Inspector = React.createClass({
     getDefaultProps: function() {
         return {
-            className: ''
+            className: '',
+            search: true
         };
     },
     getInitialState: function() {
@@ -24,9 +25,14 @@ var Inspector = React.createClass({
     },
     render: function() {
         return <div className={ 'json-inspector ' + this.props.className }>
-            <SearchBar onChange={ this.search } onEnter={ this.jump } />
+            { this.renderSearchBar() }
             <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
         </div>;
+    },
+    renderSearchBar: function() {
+        if (this.props.search) {
+            return <SearchBar onChange={ this.search } onEnter={ this.jump } />;
+        }
     },
     isExpanded: function(value, label, prefix) {
         var query = this.state.query;
