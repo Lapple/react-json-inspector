@@ -2,7 +2,7 @@
   "name": "react-json-inspector",
   "version": "1.0.0",
   "description": "React JSON inspector component",
-  "main": "json-inspector.js",
+  "main": "json-inspector.jsx",
   "author": {
     "name": "Aziz Yuldoshev",
     "email": "yuldoshev.aziz@gmail.com",
