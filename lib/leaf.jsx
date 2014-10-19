@@ -94,7 +94,7 @@ function isPrimitive(object) {
 }
 
 function items(count) {
-    return count + (count > 1 ? ' items' : ' item');
+    return count + (count === 1 ? ' item' : ' items');
 }
 
 module.exports = Leaf;
