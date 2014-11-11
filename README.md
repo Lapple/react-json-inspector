@@ -15,7 +15,7 @@ functionality.
 var Inspector = require('react-json-inspector');
 var data = { /* ... */ };
 
-React.renderComponent(
+React.render(
     <Inspector data={ data } />,
     document.getElementById('inspector')
 );
