@@ -26,7 +26,9 @@ var Inspector = React.createClass({
     },
     render: function() {
         return <div className={ 'json-inspector ' + this.props.className }>
-            { this.renderSearchBar() }
+            <div className='json-inspector__toolbar'>
+                { this.renderSearchBar() }
+            </div>
             <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
         </div>;
     },
