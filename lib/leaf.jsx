@@ -13,10 +13,12 @@ var Leaf = React.createClass({
     },
     render: function() {
         return <div className='json-inspector__leaf' id={ 'leaf-' + this.getCurrentPath() }>
-            <span className='json-inspector__key' onClick={ this.toggle }>
-                { this.props.format(this.props.label.toString()) }:
-            </span>
-            { this.renderTitle() }
+            <div className='json-inspector__line' onClick={ this.toggle }>
+                <span className='json-inspector__key'>
+                    { this.props.format(this.props.label.toString()) }:
+                </span>
+                { this.renderTitle() }
+            </div>
             { this.renderChildren() }
         </div>;
     },

@@ -6,6 +6,29 @@
     padding-left: 10px;
 }
 
+.json-inspector__line {
+    position: relative;
+
+    cursor: pointer;
+}
+
+.json-inspector__line:after {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: -999em;
+    right: -999em;
+    bottom: 0;
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+.json-inspector__line:hover:after {
+    background: rgba(0, 0, 0, 0.06);
+}
+
 .json-inspector__value {
     margin-left: 5px;
 }
@@ -18,7 +41,6 @@
 }
 
 .json-inspector__key {
-    cursor: pointer;
     color: #505050;
 }
 
