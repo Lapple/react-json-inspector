@@ -2,6 +2,7 @@ var React = require('react');
 
 var ARRAY_TYPE = 'Array';
 var OBJECT_TYPE = 'Object';
+var PATH_PREFIX = '.root.';
 
 var Leaf = React.createClass({
     getInitialState: function() {
@@ -14,6 +15,9 @@ var Leaf = React.createClass({
     render: function() {
         return <div className='json-inspector__leaf' id={ 'leaf-' + this.getCurrentPath() }>
             <div className='json-inspector__line' onClick={ this.toggle }>
+                <div className='json-inspector__flatpath'>
+                    { this.getCurrentPath().substr(PATH_PREFIX.length) }
+                </div>
                 <span className='json-inspector__key'>
                     { this.props.format(this.props.label.toString()) }:
                 </span>
@@ -52,7 +56,7 @@ var Leaf = React.createClass({
         switch (type(p.data)) {
             case ARRAY_TYPE:
                 return p.data.map(function(value, index) {
-                    return Leaf({
+                    return leaf({
                         data: value,
                         label: index,
                         prefix: childPrefix,
@@ -63,7 +67,7 @@ var Leaf = React.createClass({
                 });
             case OBJECT_TYPE:
                 return Object.keys(p.data).map(function(key) {
-                    return Leaf({
+                    return leaf({
                         data: p.data[key],
                         label: key,
                         prefix: childPrefix,
@@ -85,6 +89,8 @@ var Leaf = React.createClass({
         }
     }
 });
+
+var leaf = React.createFactory(Leaf);
 
 function type(object) {
     return Object.prototype.toString.call(object).slice(8, -1);
