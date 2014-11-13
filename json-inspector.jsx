@@ -26,15 +26,33 @@ var Inspector = React.createClass({
     },
     render: function() {
         return <div className={ 'json-inspector ' + this.props.className }>
-            <div className='json-inspector__toolbar'>
-                { this.renderSearchBar() }
-            </div>
+            { this.renderToolbar() }
             <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
         </div>;
     },
-    renderSearchBar: function() {
+    renderToolbar: function() {
         if (this.props.search) {
-            return <SearchBar onChange={ this.search } onEnter={ this.jump } />;
+            return <div className='json-inspector__toolbar'>
+                <SearchBar onChange={ this.search } onEnter={ this.jump } />
+                { this.renderSearchCount() }
+            </div>;
+        }
+    },
+    renderSearchCount: function() {
+        var s = this.state;
+        var current = s.jumpPosition;
+
+        if (current !== DEFAULT_JUMP_POSITION) {
+            var total = this.getMatches().length;
+            var result = 'Nothing found';
+
+            if (total > 0) {
+                result = ((current % total) + 1) + ' of ' + total;
+            }
+
+            return <span className='json-inspector__counter'>
+                { result }
+            </span>;
         }
     },
     isExpanded: function(value, label, prefix) {
@@ -54,27 +72,42 @@ var Inspector = React.createClass({
     search: function(query) {
         this.setState({
             query: query,
-            jumpPosition: DEFAULT_JUMP_POSITION,
-            searcher: searcher(this.props.data)
+            jumpPosition: query ? 0 : DEFAULT_JUMP_POSITION
         });
     },
     jump: function() {
-        this.setState({
-            jumpPosition: this.state.jumpPosition + 1
-        });
+        if (this.state.query) {
+            this.setState({
+                jumpPosition: this.state.jumpPosition + 1
+            });
+        }
     },
     formatter: function(string) {
         return <Highlighter string={ string } query={ this.state.query } />;
     },
+    componentDidMount: function() {
+        this.createSearcher(this.props.data);
+    },
+    componentWillReceiveProps: function(p) {
+        this.createSearcher(p.data);
+    },
     componentWillUpdate: function(p, s) {
         if (s.query && s.jumpPosition !== DEFAULT_JUMP_POSITION) {
-            var matches = Object.keys(s.searcher(s.query).matches);
+            var matches = this.getMatches();
             var position = s.jumpPosition % matches.length;
 
             try {
                 scrollTo(leafElement(matches[position]));
             } catch(e) {}
         }
+    },
+    createSearcher: function(data) {
+        this.setState({
+            searcher: searcher(data)
+        });
+    },
+    getMatches: function() {
+        return Object.keys(this.state.searcher(this.state.query).matches);
     }
 });
 

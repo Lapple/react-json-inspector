@@ -29,15 +29,9 @@
     background: rgba(0, 0, 0, 0.06);
 }
 
-.json-inspector__line:hover .json-inspector__flatpath {
-    color: #505050;
-}
-
 .json-inspector__flatpath {
     float: right;
     margin-left: 10px;
-
-    color: #d8d8d8;
 }
 
 .json-inspector__value {
@@ -45,9 +39,8 @@
 }
 
 .json-inspector__search {
-    display: block;
     min-width: 300px;
-    margin: 0 0 10px;
+    margin: 0 10px 10px 0;
     padding: 2px;
 }
 
