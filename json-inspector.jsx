@@ -22,7 +22,6 @@ var Inspector = React.createClass({
     getInitialState: function() {
         return {
             query: null,
-            flatdata: null,
             jumpPosition: DEFAULT_JUMP_POSITION
         };
     },
@@ -51,8 +50,8 @@ var Inspector = React.createClass({
         var s = this.state;
         var current = s.jumpPosition;
 
-        if (current !== DEFAULT_JUMP_POSITION) {
-            var total = this.getMatches().length;
+        if (s.query && current !== DEFAULT_JUMP_POSITION) {
+            var total = this.getMatches(s.query).length;
             var result = 'Nothing found';
 
             if (total > 0) {
@@ -102,7 +101,7 @@ var Inspector = React.createClass({
     },
     componentWillUpdate: function(p, s) {
         if (s.query && s.jumpPosition !== DEFAULT_JUMP_POSITION) {
-            var matches = this.getMatches();
+            var matches = this.getMatches(s.query);
             var position = s.jumpPosition % matches.length;
 
             try {
@@ -110,13 +109,16 @@ var Inspector = React.createClass({
             } catch(e) {}
         }
     },
+    shouldComponentUpdate: function (p, s) {
+        return p !== this.props || s.query !== this.state.query || s.jumpPosition !== this.state.jumpPosition;
+    },
     createSearcher: function(data) {
         this.setState({
             searcher: searcher(data)
         });
     },
-    getMatches: function() {
-        return Object.keys(this.state.searcher(this.state.query).matches);
+    getMatches: function(query) {
+        return Object.keys(this.state.searcher(query).matches);
     }
 });
 

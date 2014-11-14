@@ -93,6 +93,9 @@ var Leaf = React.createClass({
                 return null;
         }
     },
+    shouldComponentUpdate: function (p, s) {
+        return s.expanded !== this.state.expanded;
+    },
     getCurrentPath: function() {
         return this.props.prefix + '.' + this.props.label;
     },
