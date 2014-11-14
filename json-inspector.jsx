@@ -14,7 +14,9 @@ var Inspector = React.createClass({
         return {
             data: null,
             search: true,
-            className: ''
+            className: '',
+            id: 'json-' + Math.random(),
+            onClick: noop
         };
     },
     getInitialState: function() {
@@ -27,7 +29,14 @@ var Inspector = React.createClass({
     render: function() {
         return <div className={ 'json-inspector ' + this.props.className }>
             { this.renderToolbar() }
-            <Leaf data={ this.props.data } label='root' prefix='' isExpanded={ this.isExpanded } format={ this.formatter } key={ this.state.query } />
+            <Leaf data={ this.props.data }
+                label='root'
+                prefix=''
+                onClick={ this.props.onClick }
+                id={ this.props.id }
+                isExpanded={ this.isExpanded }
+                format={ this.formatter }
+                key={ this.state.query } />
         </div>;
     },
     renderToolbar: function() {
@@ -110,6 +119,8 @@ var Inspector = React.createClass({
         return Object.keys(this.state.searcher(this.state.query).matches);
     }
 });
+
+function noop() {}
 
 function leafElement(path) {
     return document.getElementById('leaf-' + path);

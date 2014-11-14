@@ -7,6 +7,7 @@
 }
 
 .json-inspector__line {
+    display: block;
     position: relative;
 
     cursor: pointer;
@@ -27,6 +28,10 @@
 
 .json-inspector__line:hover:after {
     background: rgba(0, 0, 0, 0.06);
+}
+
+.json-inspector__radio {
+    display: none;
 }
 
 .json-inspector__flatpath {

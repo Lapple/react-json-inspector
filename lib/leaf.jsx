@@ -13,16 +13,25 @@ var Leaf = React.createClass({
         };
     },
     render: function() {
+        var uid = unique();
+
+        var d = {
+            path: this.getCurrentPath().substr(PATH_PREFIX.length),
+            key: this.props.label.toString(),
+            value: this.props.data
+        };
+
         return <div className='json-inspector__leaf' id={ 'leaf-' + this.getCurrentPath() }>
-            <div className='json-inspector__line' onClick={ this.toggle }>
+            <input className='json-inspector__radio' type='radio' name={ this.props.id } id={ uid } />
+            <label className='json-inspector__line' htmlFor={ uid } onClick={ this._onClick.bind(this, d) }>
                 <div className='json-inspector__flatpath'>
-                    { this.getCurrentPath().substr(PATH_PREFIX.length) }
+                    { d.path }
                 </div>
                 <span className='json-inspector__key'>
-                    { this.props.format(this.props.label.toString()) }:
+                    { this.props.format(d.key) }:
                 </span>
                 { this.renderTitle() }
-            </div>
+            </label>
             { this.renderChildren() }
         </div>;
     },
@@ -61,7 +70,9 @@ var Leaf = React.createClass({
                         label: index,
                         prefix: childPrefix,
                         isExpanded: p.isExpanded,
+                        onClick: p.onClick,
                         format: p.format,
+                        id: p.id,
                         key: index
                     });
                 });
@@ -72,7 +83,9 @@ var Leaf = React.createClass({
                         label: key,
                         prefix: childPrefix,
                         isExpanded: p.isExpanded,
+                        onClick: p.onClick,
                         format: p.format,
+                        id: p.id,
                         key: key
                     });
                 });
@@ -87,6 +100,12 @@ var Leaf = React.createClass({
         if (!isPrimitive(this.props.data)) {
             this.setState({ expanded: !this.state.expanded });
         }
+    },
+    _onClick: function(data, e) {
+        this.toggle();
+        this.props.onClick(data);
+
+        e.stopPropagation();
     }
 });
 
@@ -103,6 +122,10 @@ function isPrimitive(object) {
 
 function items(count) {
     return count + (count === 1 ? ' item' : ' items');
+}
+
+function unique() {
+    return 'id_' + Date.now() + Math.floor(Math.random() * 100);
 }
 
 module.exports = Leaf;
