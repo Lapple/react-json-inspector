@@ -21,7 +21,7 @@ var Inspector = React.createClass({
     },
     getInitialState: function() {
         return {
-            query: null,
+            query: '',
             jumpPosition: DEFAULT_JUMP_POSITION
         };
     },
@@ -110,7 +110,10 @@ var Inspector = React.createClass({
         }
     },
     shouldComponentUpdate: function (p, s) {
-        return p !== this.props || s.query !== this.state.query || s.jumpPosition !== this.state.jumpPosition;
+        return s.jumpPosition !== this.state.jumpPosition ||
+            s.query !== this.state.query ||
+            p.data !== this.props.data ||
+            p.onClick !== this.props.onClick;
     },
     createSearcher: function(data) {
         this.setState({
