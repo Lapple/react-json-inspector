@@ -6,7 +6,6 @@ var noop = function() {};
 var SearchBar = React.createClass({
     getDefaultProps: function() {
         return {
-            minlength: 2,
             timeout: 300,
             onChange: noop,
             onEnter: noop
@@ -27,10 +26,10 @@ var SearchBar = React.createClass({
         }
     },
     update: function() {
-        var value = this.refs.query.getDOMNode().value;
+        var query = this.refs.query.getDOMNode().value;
 
-        if (value.length >= this.props.minlength || value.length === 0) {
-            this.props.onChange(value);
+        if (this.props.validateQuery(query) || query.length === 0) {
+            this.props.onChange(query);
         }
     }
 });

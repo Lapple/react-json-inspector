@@ -16,7 +16,10 @@ var Inspector = React.createClass({
             search: true,
             className: '',
             id: 'json-' + Math.random(),
-            onClick: noop
+            onClick: noop,
+            validateQuery: function(query) {
+                return query.length >= 2;
+            }
         };
     },
     getInitialState: function() {
@@ -41,7 +44,7 @@ var Inspector = React.createClass({
     renderToolbar: function() {
         if (this.props.search) {
             return <div className='json-inspector__toolbar'>
-                <SearchBar onChange={ this.search } onEnter={ this.jump } />
+                <SearchBar onChange={ this.search } onEnter={ this.jump } validateQuery={ this.props.validateQuery } />
                 { this.renderSearchCount() }
             </div>;
         }
