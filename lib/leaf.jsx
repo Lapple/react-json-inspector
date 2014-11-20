@@ -14,21 +14,22 @@ var Leaf = React.createClass({
     },
     render: function() {
         var uid = unique();
+        var p = this.props;
 
         var d = {
             path: this.getCurrentPath().substr(PATH_PREFIX.length),
-            key: this.props.label.toString(),
-            value: this.props.data
+            key: p.label.toString(),
+            value: p.data
         };
 
-        return <div className='json-inspector__leaf' id={ 'leaf-' + this.getCurrentPath() }>
-            <input className='json-inspector__radio' type='radio' name={ this.props.id } id={ uid } />
+        return <div className={ 'json-inspector__leaf' + (p.isRoot ? ' json-inspector__leaf_root' : '') } id={ 'leaf-' + this.getCurrentPath() }>
+            <input className='json-inspector__radio' type='radio' name={ p.id } id={ uid } />
             <label className='json-inspector__line' htmlFor={ uid } onClick={ this._onClick.bind(this, d) }>
                 <div className='json-inspector__flatpath'>
                     { d.path }
                 </div>
                 <span className='json-inspector__key'>
-                    { this.props.format(d.key) }:
+                    { p.format(d.key) }:
                 </span>
                 { this.renderTitle() }
             </label>

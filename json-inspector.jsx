@@ -38,6 +38,7 @@ var Inspector = React.createClass({
                 id={ this.props.id }
                 isExpanded={ this.isExpanded }
                 format={ this.formatter }
+                isRoot={ true }
                 key={ this.state.query } />
         </div>;
     },
