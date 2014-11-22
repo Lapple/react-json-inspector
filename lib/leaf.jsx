@@ -1,19 +1,21 @@
 var React = require('react');
 
+var uid = require('./uid.js');
+var Highlighter = require('./highlighter.jsx');
+
 var ARRAY_TYPE = 'Array';
 var OBJECT_TYPE = 'Object';
 var PATH_PREFIX = '.root.';
 
 var Leaf = React.createClass({
-    getInitialState: function() {
-        var p = this.props;
-
+    getDefaultProps: function() {
         return {
-            expanded: p.isExpanded(p.data, p.label, p.prefix)
+            prefix: '',
+            label: 'root'
         };
     },
     render: function() {
-        var uid = unique();
+        var id = 'id_' + uid();
         var p = this.props;
 
         var d = {
@@ -23,13 +25,13 @@ var Leaf = React.createClass({
         };
 
         return <div className={ 'json-inspector__leaf' + (p.isRoot ? ' json-inspector__leaf_root' : '') } id={ 'leaf-' + this.getCurrentPath() }>
-            <input className='json-inspector__radio' type='radio' name={ p.id } id={ uid } />
-            <label className='json-inspector__line' htmlFor={ uid } onClick={ this._onClick.bind(this, d) }>
+            <input className='json-inspector__radio' type='radio' name={ p.id } id={ id } />
+            <label className='json-inspector__line' htmlFor={ id } onClick={ this._onClick.bind(this, d) }>
                 <div className='json-inspector__flatpath'>
                     { d.path }
                 </div>
                 <span className='json-inspector__key'>
-                    { p.format(d.key) }:
+                    { this.format(d.key) }:
                 </span>
                 { this.renderTitle() }
             </label>
@@ -51,17 +53,13 @@ var Leaf = React.createClass({
                 </span>;
             default:
                 return <span className={ 'json-inspector__value json-inspector__value_' + keyType.toLowerCase() }>
-                    { this.props.format(String(data)) }
+                    { this.format(String(data)) }
                 </span>;
         }
     },
     renderChildren: function() {
         var p = this.props;
         var childPrefix = this.getCurrentPath();
-
-        if (!this.state.expanded) {
-            return null;
-        }
 
         switch (type(p.data)) {
             case ARRAY_TYPE:
@@ -70,10 +68,11 @@ var Leaf = React.createClass({
                         data: value,
                         label: index,
                         prefix: childPrefix,
-                        isExpanded: p.isExpanded,
                         onClick: p.onClick,
-                        format: p.format,
                         id: p.id,
+                        query: p.query,
+                        updated: p.updated,
+                        matches: p.matches,
                         key: index
                     });
                 });
@@ -83,10 +82,11 @@ var Leaf = React.createClass({
                         data: p.data[key],
                         label: key,
                         prefix: childPrefix,
-                        isExpanded: p.isExpanded,
                         onClick: p.onClick,
-                        format: p.format,
                         id: p.id,
+                        query: p.query,
+                        updated: p.updated,
+                        matches: p.matches,
                         key: key
                     });
                 });
@@ -97,15 +97,25 @@ var Leaf = React.createClass({
     getCurrentPath: function() {
         return this.props.prefix + '.' + this.props.label;
     },
-    toggle: function() {
-        if (!isPrimitive(this.props.data)) {
-            this.setState({ expanded: !this.state.expanded });
+    shouldComponentUpdate: function (p) {
+        var path = this.getCurrentPath();
+        var query = this.props.query;
+
+        if (p.isRoot) {
+            return true;
+        }
+
+        if (query && p.query.indexOf(query) === 0) {
+            return (!p.updated || path in p.updated) || (!p.matches || path in p.matches);
+        } else {
+            return true;
         }
     },
+    format: function(string) {
+        return <Highlighter string={ string } query={ this.props.query } />;
+    },
     _onClick: function(data, e) {
-        this.toggle();
         this.props.onClick(data);
-
         e.stopPropagation();
     }
 });
@@ -116,17 +126,8 @@ function type(object) {
     return Object.prototype.toString.call(object).slice(8, -1);
 }
 
-function isPrimitive(object) {
-    var t = type(object);
-    return t !== ARRAY_TYPE && t !== OBJECT_TYPE;
-}
-
 function items(count) {
     return count + (count === 1 ? ' item' : ' items');
-}
-
-function unique() {
-    return 'id_' + Date.now() + Math.floor(Math.random() * 100);
 }
 
 module.exports = Leaf;

@@ -7,6 +7,9 @@ var Highlighter = React.createClass({
             query: ''
         };
     },
+    shouldComponentUpdate: function(p) {
+        return p.query !== this.props.query;
+    },
     render: function() {
         var p = this.props;
 

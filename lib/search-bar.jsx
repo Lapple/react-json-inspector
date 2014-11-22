@@ -1,7 +1,7 @@
 var React = require('react');
 var debounce = require('debounce');
 
-var noop = function() {};
+var noop = require('./noop.js');
 
 var SearchBar = React.createClass({
     getDefaultProps: function() {
@@ -17,20 +17,16 @@ var SearchBar = React.createClass({
             type='search'
             placeholder='Search'
             ref='query'
-            onInput={ debounce(this.update, this.props.timeout) }
+            onChange={ debounce(this.update, this.props.timeout) }
             onKeyUp={ this.onKeyUp } />;
     },
     onKeyUp: function(e) {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
             this.props.onEnter();
         }
     },
     update: function() {
-        var query = this.refs.query.getDOMNode().value;
-
-        if (this.props.validateQuery(query) || query.length === 0) {
-            this.props.onChange(query);
-        }
+        this.props.onChange(this.refs.query.getDOMNode().value);
     }
 });
 
