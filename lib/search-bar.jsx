@@ -6,9 +6,8 @@ var noop = require('./noop.js');
 var SearchBar = React.createClass({
     getDefaultProps: function() {
         return {
-            timeout: 300,
-            onChange: noop,
-            onEnter: noop
+            timeout: 100,
+            onChange: noop
         };
     },
     render: function() {
@@ -17,13 +16,7 @@ var SearchBar = React.createClass({
             type='search'
             placeholder='Search'
             ref='query'
-            onChange={ debounce(this.update, this.props.timeout) }
-            onKeyUp={ this.onKeyUp } />;
-    },
-    onKeyUp: function(e) {
-        if (e.key === 'Enter') {
-            this.props.onEnter();
-        }
+            onChange={ debounce(this.update, this.props.timeout) } />;
     },
     update: function() {
         this.props.onChange(this.refs.query.getDOMNode().value);

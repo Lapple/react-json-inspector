@@ -1,17 +1,23 @@
 var React = require('react');
 
 var uid = require('./uid.js');
-var Highlighter = require('./highlighter.jsx');
+var type = require('./type.js');
+var Highlighter = require('./highlighter.js');
 
-var ARRAY_TYPE = 'Array';
-var OBJECT_TYPE = 'Object';
 var PATH_PREFIX = '.root.';
 
 var Leaf = React.createClass({
+    getInitialState: function() {
+        var p = this.props;
+
+        return {
+            expanded: (p.query && !contains(p.label, p.query)) || p.isRoot
+        }
+    },
     getDefaultProps: function() {
         return {
-            prefix: '',
-            label: 'root'
+            isRoot: false,
+            prefix: ''
         };
     },
     render: function() {
@@ -19,12 +25,12 @@ var Leaf = React.createClass({
         var p = this.props;
 
         var d = {
-            path: this.getCurrentPath().substr(PATH_PREFIX.length),
+            path: this.path().substr(PATH_PREFIX.length),
             key: p.label.toString(),
             value: p.data
         };
 
-        return <div className={ 'json-inspector__leaf' + (p.isRoot ? ' json-inspector__leaf_root' : '') } id={ 'leaf-' + this.getCurrentPath() }>
+        return <div className={ 'json-inspector__leaf' + (p.isRoot ? ' json-inspector__leaf_root' : '') } id={ 'leaf-' + this.path() }>
             <input className='json-inspector__radio' type='radio' name={ p.id } id={ id } />
             <label className='json-inspector__line' htmlFor={ id } onClick={ this._onClick.bind(this, d) }>
                 <div className='json-inspector__flatpath'>
@@ -40,94 +46,81 @@ var Leaf = React.createClass({
     },
     renderTitle: function() {
         var data = this.props.data;
-        var keyType = type(data);
+        var t = type(data);
 
-        switch (keyType) {
-            case ARRAY_TYPE:
+        switch (t) {
+            case 'Array':
                 return <span className='json-inspector__value json-inspector__value_helper'>
                     { '[] ' + items(data.length) }
                 </span>;
-            case OBJECT_TYPE:
+            case 'Object':
                 return <span className='json-inspector__value json-inspector__value_helper'>
                     { '{} ' + items(Object.keys(data).length) }
                 </span>;
             default:
-                return <span className={ 'json-inspector__value json-inspector__value_' + keyType.toLowerCase() }>
+                return <span className={ 'json-inspector__value json-inspector__value_' + t.toLowerCase() }>
                     { this.format(String(data)) }
                 </span>;
         }
     },
     renderChildren: function() {
         var p = this.props;
-        var childPrefix = this.getCurrentPath();
+        var childPrefix = this.path();
 
-        switch (type(p.data)) {
-            case ARRAY_TYPE:
-                return p.data.map(function(value, index) {
-                    return leaf({
-                        data: value,
-                        label: index,
-                        prefix: childPrefix,
-                        onClick: p.onClick,
-                        id: p.id,
-                        query: p.query,
-                        updated: p.updated,
-                        matches: p.matches,
-                        key: index
+        if (this.state.expanded) {
+            switch (type(p.data)) {
+                case 'Array':
+                case 'Object':
+                    return Object.keys(p.data).map(function(key) {
+                        return <Leaf
+                            data={ p.data[key] }
+                            label={ key }
+                            prefix={ childPrefix }
+                            onClick={ p.onClick }
+                            id={ p.id }
+                            query={ p.query }
+                            key={ key } />;
                     });
-                });
-            case OBJECT_TYPE:
-                return Object.keys(p.data).map(function(key) {
-                    return leaf({
-                        data: p.data[key],
-                        label: key,
-                        prefix: childPrefix,
-                        onClick: p.onClick,
-                        id: p.id,
-                        query: p.query,
-                        updated: p.updated,
-                        matches: p.matches,
-                        key: key
-                    });
-                });
-            default:
-                return null;
+                default:
+                    return null;
+            }
         }
     },
-    getCurrentPath: function() {
+    componentWillReceiveProps: function(p) {
+        if (p.query) {
+            this.setState({
+                expanded: !contains(p.label, p.query)
+            });
+        } else if (!p.isRoot) {
+            this.setState({
+                expanded: false
+            });
+        }
+    },
+    path: function() {
         return this.props.prefix + '.' + this.props.label;
     },
-    shouldComponentUpdate: function (p) {
-        var path = this.getCurrentPath();
-        var query = this.props.query;
-
-        if (p.isRoot) {
-            return true;
-        }
-
-        if (query && p.query.indexOf(query) === 0) {
-            return (!p.updated || path in p.updated) || (!p.matches || path in p.matches);
-        } else {
-            return true;
-        }
-    },
     format: function(string) {
-        return <Highlighter string={ string } query={ this.props.query } />;
+        return <Highlighter string={ string } highlight={ this.props.query } />;
+    },
+    toggle: function() {
+        this.setState({
+            expanded: !this.state.expanded
+        });
     },
     _onClick: function(data, e) {
+        this.toggle();
         this.props.onClick(data);
         e.stopPropagation();
     }
 });
 
-var leaf = React.createFactory(Leaf);
-
-function type(object) {
-    return Object.prototype.toString.call(object).slice(8, -1);
-}
-
 function items(count) {
     return count + (count === 1 ? ' item' : ' items');
+}
+
+function contains(string, substring) {
+    return string.indexOf(substring) !== -1;
 }
 
 module.exports = Leaf;

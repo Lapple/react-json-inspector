@@ -21,6 +21,7 @@
   "devDependencies": {
     "browserify": "^6.1.0",
     "http-server": "^0.7.2",
+    "object-assign": "^2.0.0",
     "reactify": "^0.16.0",
     "watchify": "^2.0.0"
   },
