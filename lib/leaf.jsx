@@ -30,7 +30,7 @@ var Leaf = React.createClass({
             value: p.data
         };
 
-        return <div className={ 'json-inspector__leaf' + (p.isRoot ? ' json-inspector__leaf_root' : '') } id={ 'leaf-' + this.path() }>
+        return <div className={ this.rootClassName() } id={ 'leaf-' + this.path() }>
             <input className='json-inspector__radio' type='radio' name={ p.id } id={ id } />
             <label className='json-inspector__line' htmlFor={ id } onClick={ this._onClick.bind(this, d) }>
                 <div className='json-inspector__flatpath'>
@@ -67,23 +67,17 @@ var Leaf = React.createClass({
         var p = this.props;
         var childPrefix = this.path();
 
-        if (this.state.expanded) {
-            switch (type(p.data)) {
-                case 'Array':
-                case 'Object':
-                    return Object.keys(p.data).map(function(key) {
-                        return <Leaf
-                            data={ p.data[key] }
-                            label={ key }
-                            prefix={ childPrefix }
-                            onClick={ p.onClick }
-                            id={ p.id }
-                            query={ p.query }
-                            key={ key } />;
-                    });
-                default:
-                    return null;
-            }
+        if (this.state.expanded && !isPrimitive(p.data)) {
+            return Object.keys(p.data).map(function(key) {
+                return <Leaf
+                    data={ p.data[key] }
+                    label={ key }
+                    prefix={ childPrefix }
+                    onClick={ p.onClick }
+                    id={ p.id }
+                    query={ p.query }
+                    key={ key } />;
+            });
         }
     },
     componentWillReceiveProps: function(p) {
@@ -103,6 +97,23 @@ var Leaf = React.createClass({
     format: function(string) {
         return <Highlighter string={ string } highlight={ this.props.query } />;
     },
+    rootClassName: function() {
+        var cn = 'json-inspector__leaf';
+
+        if (this.props.isRoot) {
+            cn += ' json-inspector__leaf_root';
+        }
+
+        if (this.state.expanded) {
+            cn += ' json-inspector__leaf_expanded';
+        }
+
+        if (!isPrimitive(this.props.data)) {
+            cn += ' json-inspector__leaf_composite';
+        }
+
+        return cn;
+    },
     toggle: function() {
         this.setState({
             expanded: !this.state.expanded
@@ -121,6 +132,11 @@ function items(count) {
 
 function contains(string, substring) {
     return string.indexOf(substring) !== -1;
+}
+
+function isPrimitive(value) {
+    var t = type(value);
+    return t !== 'Object' && t !== 'Array';
 }
 
 module.exports = Leaf;

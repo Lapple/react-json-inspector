@@ -10,7 +10,7 @@
     display: block;
     position: relative;
 
-    cursor: pointer;
+    cursor: default;
 }
 
 .json-inspector__line:after {
@@ -28,6 +28,10 @@
 
 .json-inspector__line:hover:after {
     background: rgba(0, 0, 0, 0.06);
+}
+
+.json-inspector__leaf_composite > .json-inspector__line {
+    cursor: pointer;
 }
 
 .json-inspector__radio {
