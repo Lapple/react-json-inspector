@@ -11,7 +11,7 @@ var Leaf = React.createClass({
         var p = this.props;
 
         return {
-            expanded: (p.query && !contains(p.label, p.query)) || p.isRoot
+            expanded: (p.query && !contains(this.path(), p.query)) || p.isRoot
         }
     },
     getDefaultProps: function() {
