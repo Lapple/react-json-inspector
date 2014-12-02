@@ -5,6 +5,7 @@ var SearchBar = require('./lib/search-bar.jsx');
 
 var filterer = require('./lib/filterer.js');
 var isEmpty = require('./lib/is-empty.js');
+var lens = require('./lib/lens.js');
 var noop = require('./lib/noop.js');
 
 var Inspector = React.createClass({
@@ -30,7 +31,7 @@ var Inspector = React.createClass({
         var s = this.state;
 
         var data = s.query ? s.filterer(s.query) : p.data;
-        var leaf = <Leaf data={ data } label='root' onClick={ p.onClick } id={ p.id } query={ s.query } isRoot={ true } />;;
+        var leaf = <Leaf data={ data } label='root' onClick={ p.onClick } id={ p.id } query={ s.query } isRoot={ true } getOriginal={ this.getOriginal } />;
         var notFound = <div className='json-inspector__not-found'>Nothing found</div>;
 
         return <div className={ 'json-inspector ' + p.className }>
@@ -67,6 +68,9 @@ var Inspector = React.createClass({
         this.setState({
             filterer: filterer(data)
         });
+    },
+    getOriginal: function(path) {
+        return lens(this.props.data, path);
     }
 });
 

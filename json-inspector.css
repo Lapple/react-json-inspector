@@ -80,3 +80,23 @@
     box-shadow: 0 -1px 0 2px #ff0;
     border-radius: 2px;
 }
+
+.json-inspector__show-original {
+    display: inline-block;
+    padding: 0 6px;
+
+    color: #666;
+    cursor: pointer;
+}
+
+.json-inspector__show-original:hover {
+    color: #111;
+}
+
+.json-inspector__show-original:before {
+    content: '⥂';
+}
+
+.json-inspector__show-original:hover:after {
+    content: ' show original'
+}

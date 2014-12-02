@@ -11,7 +11,7 @@ var Leaf = React.createClass({
         var p = this.props;
 
         return {
-            expanded: (p.query && !contains(this.path(), p.query)) || p.isRoot
+            expanded: (p.query && !contains(this.path(), p.query) && p.getOriginal) || p.isRoot
         }
     },
     getDefaultProps: function() {
@@ -40,12 +40,13 @@ var Leaf = React.createClass({
                     { this.format(d.key) }:
                 </span>
                 { this.renderTitle() }
+                { this.renderShowOriginalButton() }
             </label>
             { this.renderChildren() }
         </div>;
     },
     renderTitle: function() {
-        var data = this.props.data;
+        var data = this.data();
         var t = type(data);
 
         switch (t) {
@@ -66,19 +67,30 @@ var Leaf = React.createClass({
     renderChildren: function() {
         var p = this.props;
         var childPrefix = this.path();
+        var data = this.data();
 
-        if (this.state.expanded && !isPrimitive(p.data)) {
-            return Object.keys(p.data).map(function(key) {
+        if (this.state.expanded && !isPrimitive(data)) {
+            return Object.keys(data).map(function(key) {
                 return <Leaf
-                    data={ p.data[key] }
+                    data={ data[key] }
                     label={ key }
                     prefix={ childPrefix }
                     onClick={ p.onClick }
                     id={ p.id }
                     query={ p.query }
+                    getOriginal={ this.state.original ? null : p.getOriginal }
                     key={ key } />;
-            });
+            }, this);
         }
+    },
+    renderShowOriginalButton: function() {
+        var p = this.props;
+
+        if (isPrimitive(p.data) || this.state.original || !p.getOriginal || !p.query || contains(this.path(), p.query)) {
+            return;
+        }
+
+        return <span className='json-inspector__show-original' onClick={ this._onShowOriginalClick } />;
     },
     componentWillReceiveProps: function(p) {
         if (p.query) {
@@ -93,6 +105,9 @@ var Leaf = React.createClass({
     },
     path: function() {
         return this.props.prefix + '.' + this.props.label;
+    },
+    data: function() {
+        return this.state.original || this.props.data;
     },
     format: function(string) {
         return <Highlighter string={ string } highlight={ this.props.query } />;
@@ -122,6 +137,14 @@ var Leaf = React.createClass({
     _onClick: function(data, e) {
         this.toggle();
         this.props.onClick(data);
+
+        e.stopPropagation();
+    },
+    _onShowOriginalClick: function(e) {
+        this.setState({
+            original: this.props.getOriginal(this.path().substr(PATH_PREFIX.length))
+        });
+
         e.stopPropagation();
     }
 });
