@@ -3,6 +3,7 @@ var React = require('react');
 var uid = require('./uid.js');
 var type = require('./type.js');
 var Highlighter = require('./highlighter.js');
+var Selection = require('./selection.jsx');
 
 var PATH_PREFIX = '.root.';
 
@@ -38,6 +39,7 @@ var Leaf = React.createClass({
                 </div>
                 <span className='json-inspector__key'>
                     { this.format(d.key) }:
+                    <Selection value={ d.key } />
                 </span>
                 { this.renderTitle() }
                 { this.renderShowOriginalButton() }
@@ -61,6 +63,7 @@ var Leaf = React.createClass({
             default:
                 return <span className={ 'json-inspector__value json-inspector__value_' + t.toLowerCase() }>
                     { this.format(String(data)) }
+                    <Selection value={ String(data) } />
                 </span>;
         }
     },
