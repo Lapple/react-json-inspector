@@ -14,10 +14,14 @@ module.exports = React.createClass({
             tabIndex='-1'
             spellCheck='false'
             onClick={ this.onClick }
+            onFocus={ this.onFocus }
             onChange={ this.onChange } />;
     },
     onChange: function() {},
     onClick: function(e) {
         e.stopPropagation();
+    },
+    onFocus: function(e) {
+        e.target.select();
     }
 });
