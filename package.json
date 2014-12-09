@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "debounce": "^1.0.0",
-    "raf": "^2.0.4",
     "react": "^0.12.0"
   },
   "devDependencies": {

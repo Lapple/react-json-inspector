@@ -6,7 +6,7 @@ var noop = require('./noop.js');
 var SearchBar = React.createClass({
     getDefaultProps: function() {
         return {
-            timeout: 200,
+            timeout: 100,
             onChange: noop
         };
     },
