@@ -1,4 +1,5 @@
 var React = require('react');
+var raf = require('raf');
 
 var uid = require('./uid.js');
 var type = require('./type.js');
@@ -12,7 +13,8 @@ var Leaf = React.createClass({
         var p = this.props;
 
         return {
-            expanded: (p.query && !contains(this.path(), p.query) && p.getOriginal) || p.isRoot
+            expanded: (p.query && !contains(this.path(), p.query) && p.getOriginal) || p.isRoot,
+            shouldRenderChildren: false
         }
     },
     getDefaultProps: function() {
@@ -72,7 +74,11 @@ var Leaf = React.createClass({
         var childPrefix = this.path();
         var data = this.data();
 
-        if (this.state.expanded && !isPrimitive(data)) {
+        if (!this.state.shouldRenderChildren || isPrimitive(data)) {
+            return null;
+        }
+
+        if (this.state.expanded) {
             return Object.keys(data).map(function(key) {
                 return <Leaf
                     data={ data[key] }
@@ -95,11 +101,19 @@ var Leaf = React.createClass({
 
         return <span className='json-inspector__show-original' onClick={ this._onShowOriginalClick } />;
     },
+    componentDidMount: function() {
+        this._scheduleChildrenRender();
+    },
+    componentWillUnmount: function() {
+        raf.cancel(this._timeout);
+    },
     componentWillReceiveProps: function(p) {
         if (p.query) {
             this.setState({
-                expanded: !contains(p.label, p.query)
+                expanded: !contains(p.label, p.query),
+                shouldRenderChildren: false
             });
+            this._scheduleChildrenRender();
         } else if (!p.isRoot) {
             this.setState({
                 expanded: false
@@ -149,6 +163,14 @@ var Leaf = React.createClass({
         });
 
         e.stopPropagation();
+    },
+    _scheduleChildrenRender: function() {
+        this._timeout = raf(this._setRenderChildren);
+    },
+    _setRenderChildren: function() {
+        this.setState({
+            shouldRenderChildren: true
+        });
     }
 });
 
