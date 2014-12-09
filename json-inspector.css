@@ -19,8 +19,8 @@
 
     position: absolute;
     top: 0;
-    left: -999em;
-    right: -999em;
+    left: -200px;
+    right: -50px;
     bottom: 0;
     z-index: -1;
 

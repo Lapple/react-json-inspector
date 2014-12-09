@@ -36,4 +36,5 @@ The class name to be added to the root component element.
 
 #### props.search
 
-Boolean flag, commands whether inspector should have a search field or not.
+Search bar component that accepts `onChange` and `data` properties. Defaults
+to built-in search bar. Pass `false` to disable search.

@@ -2,6 +2,7 @@ var React = require('react');
 
 var Leaf = require('./lib/leaf.jsx');
 var SearchBar = require('./lib/search-bar.jsx');
+var searchBar = React.createFactory(SearchBar);
 
 var filterer = require('./lib/filterer.js');
 var isEmpty = require('./lib/is-empty.js');
@@ -12,7 +13,7 @@ var Inspector = React.createClass({
     getDefaultProps: function() {
         return {
             data: null,
-            search: true,
+            search: searchBar,
             className: '',
             id: 'json-' + Date.now(),
             onClick: noop,
@@ -42,7 +43,7 @@ var Inspector = React.createClass({
     renderToolbar: function() {
         if (this.props.search) {
             return <div className='json-inspector__toolbar'>
-                <SearchBar onChange={ this.search } />
+                { this.props.search({ onChange: this.search, data: this.props.data }) }
             </div>;
         }
     },
