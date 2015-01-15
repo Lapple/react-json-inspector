@@ -35,13 +35,9 @@
     cursor: pointer;
 }
 
-.json-inspector__radio {
-    display: none;
-}
-
+.json-inspector__radio,
 .json-inspector__flatpath {
-    float: right;
-    margin-left: 10px;
+    display: none;
 }
 
 .json-inspector__value {
@@ -103,5 +99,5 @@
 }
 
 .json-inspector__show-original:hover:after {
-    content: ' show original'
+    content: ' expand'
 }
