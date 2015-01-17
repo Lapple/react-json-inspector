@@ -2,8 +2,7 @@
 
 ![Component screenshot](http://i.imgur.com/8619dv9.png)
 
-React-based JSON inspector that features tree expansion and search with jump
-functionality.
+React-based JSON inspector that features tree expansion and fast search.
 
 ### Installation
 
@@ -28,7 +27,7 @@ override or amend default styles, for instance, when using a dark background.
 
 #### props.data
 
-JSON object or array to inspect.
+The only required propery, JSON object or array to inspect.
 
 #### props.className
 
@@ -38,3 +37,13 @@ The class name to be added to the root component element.
 
 Search bar component that accepts `onChange` and `data` properties. Defaults
 to built-in search bar. Pass `false` to disable search.
+
+#### props.onClick
+
+Callback to be run whenever any key-value pair is clicked. Receives an object
+with `key`, `value` and `path` properties.
+
+#### props.validateQuery
+
+Function to check whether the entered search term is sufficient to query data.
+Defaults to `query.length >= 2`.
