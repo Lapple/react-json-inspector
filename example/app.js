@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Inspector = require('../json-inspector.jsx');
+var Inspector = require('..');
 var inspector = React.createFactory(Inspector);
 var data = require('./data.json');
 

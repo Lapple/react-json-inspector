@@ -2,7 +2,7 @@
   "name": "react-json-inspector",
   "version": "4.2.0",
   "description": "React JSON inspector component",
-  "main": "json-inspector.jsx",
+  "main": "json-inspector.js",
   "author": {
     "name": "Aziz Yuldoshev",
     "email": "yuldoshev.aziz@gmail.com",
@@ -21,7 +21,6 @@
   "devDependencies": {
     "browserify": "^6.1.0",
     "http-server": "^0.7.2",
-    "reactify": "^0.16.0",
     "watchify": "^2.0.0"
   },
   "keywords": [
@@ -29,10 +28,5 @@
   ],
   "scripts": {
     "dev": "http-server . & watchify example/app.js -o example/app.compiled.js -v & wait"
-  },
-  "browserify": {
-    "transform": [
-      "reactify"
-    ]
   }
 }

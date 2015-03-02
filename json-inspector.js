@@ -1,15 +1,17 @@
 var React = require('react');
+var D = React.DOM;
 
-var Leaf = require('./lib/leaf.jsx');
-var SearchBar = require('./lib/search-bar.jsx');
+var Leaf = require('./lib/leaf');
+var leaf = React.createFactory(Leaf);
+var SearchBar = require('./lib/search-bar');
 var searchBar = React.createFactory(SearchBar);
 
-var filterer = require('./lib/filterer.js');
-var isEmpty = require('./lib/is-empty.js');
-var lens = require('./lib/lens.js');
-var noop = require('./lib/noop.js');
+var filterer = require('./lib/filterer');
+var isEmpty = require('./lib/is-empty');
+var lens = require('./lib/lens');
+var noop = require('./lib/noop');
 
-var Inspector = React.createClass({
+module.exports = React.createClass({
     getDefaultProps: function() {
         return {
             data: null,
@@ -32,19 +34,29 @@ var Inspector = React.createClass({
         var s = this.state;
 
         var data = s.query ? s.filterer(s.query) : p.data;
-        var leaf = <Leaf data={ data } label='root' onClick={ p.onClick } id={ p.id } query={ s.query } isRoot={ true } getOriginal={ this.getOriginal } />;
-        var notFound = <div className='json-inspector__not-found'>Nothing found</div>;
 
-        return <div className={ 'json-inspector ' + p.className }>
-            { this.renderToolbar() }
-            { isEmpty(data) ? notFound : leaf }
-        </div>;
+        var rootNode = leaf({
+            data: data,
+            onClick: p.onClick,
+            id: p.id,
+            getOriginal: this.getOriginal,
+            query: s.query,
+            label: 'root',
+            isRoot: true
+        });
+
+        var notFound = D.div({ className: 'json-inspector__not-found' }, 'Nothing found');
+
+        return D.div({ className: 'json-inspector ' + p.className },
+            this.renderToolbar(),
+            isEmpty(data) ? notFound : rootNode);
     },
     renderToolbar: function() {
-        if (this.props.search) {
-            return <div className='json-inspector__toolbar'>
-                { this.props.search({ onChange: this.search, data: this.props.data }) }
-            </div>;
+        var search = this.props.search;
+
+        if (search) {
+            return D.div({ className: 'json-inspector__toolbar' },
+                search({ onChange: this.search, data: this.props.data }));
         }
     },
     search: function(query) {
@@ -74,5 +86,3 @@ var Inspector = React.createClass({
         return lens(this.props.data, path);
     }
 });
-
-module.exports = Inspector;
