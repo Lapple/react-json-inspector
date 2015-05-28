@@ -21,6 +21,16 @@ module.exports = React.createClass({
             onClick: noop,
             validateQuery: function(query) {
                 return query.length >= 2;
+            },
+            /**
+             * Decide whether the leaf node at given `keypath` should be
+             * expanded initially.
+             * @param  {String} keypath
+             * @param  {Any} value
+             * @return {Boolean}
+             */
+            isExpanded: function(keypath, value) {
+                return false;
             }
         };
     },
@@ -42,7 +52,8 @@ module.exports = React.createClass({
             getOriginal: this.getOriginal,
             query: s.query,
             label: 'root',
-            isRoot: true
+            root: true,
+            isExpanded: p.isExpanded
         });
 
         var notFound = D.div({ className: 'json-inspector__not-found' }, 'Nothing found');

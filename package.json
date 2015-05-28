@@ -27,6 +27,7 @@
     "react-component"
   ],
   "scripts": {
-    "dev": "http-server . & watchify example/app.js -o example/app.compiled.js -v & wait"
+    "server": "http-server .",
+    "watch": "watchify example/app.js -o example/app.compiled.js -v"
   }
 }
