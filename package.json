@@ -14,9 +14,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "debounce": "^1.0.0",
-    "object-assign": "^2.0.0",
-    "react": "^0.13.0"
+    "debounce": "1.0.0",
+    "object-assign": "2.0.0",
+    "react": "0.13.0"
   },
   "devDependencies": {
     "browserify": "^6.1.0",
