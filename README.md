@@ -41,8 +41,8 @@ to built-in search bar. Pass `false` to disable search.
 #### props.interactiveLabel
 
 Pass component factory that would accept `value` property. Can be used to create
-custom input fields for JSON property names and primitive values, see #3 for
-more information.
+custom input fields for JSON property names and primitive values, see
+[#3](https://github.com/Lapple/react-json-inspector/issues/3) for more information.
 
 #### props.onClick
 
