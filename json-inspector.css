@@ -78,10 +78,6 @@
     border-radius: 2px;
 }
 
-.json-inspector__selection {
-    display: none;
-}
-
 .json-inspector__show-original {
     display: inline-block;
     padding: 0 6px;

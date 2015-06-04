@@ -53,7 +53,8 @@ module.exports = React.createClass({
             query: s.query,
             label: 'root',
             root: true,
-            isExpanded: p.isExpanded
+            isExpanded: p.isExpanded,
+            interactiveLabel: p.interactiveLabel
         });
 
         var notFound = D.div({ className: 'json-inspector__not-found' }, 'Nothing found');

@@ -38,6 +38,12 @@ The class name to be added to the root component element.
 Search bar component that accepts `onChange` and `data` properties. Defaults
 to built-in search bar. Pass `false` to disable search.
 
+#### props.interactiveLabel
+
+Pass component factory that would accept `value` property. Can be used to create
+custom input fields for JSON property names and primitive values, see #3 for
+more information.
+
 #### props.onClick
 
 Callback to be run whenever any key-value pair is clicked. Receives an object
