@@ -52,10 +52,10 @@ with `key`, `value` and `path` properties.
 #### props.validateQuery
 
 Function to check whether the entered search term is sufficient to query data.
-Defaults to `query.length >= 2`.
+Defaults to `(query) => query.length >= 2`.
 
 #### props.isExpanded
 
 Optional predicate that can determine whether the leaf node should be expanded
 on initial render. Receives two arguments: `keypath` and `value`. Defaults to
-`() => false`.
+`(keypath, query) => false`.
