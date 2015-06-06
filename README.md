@@ -4,6 +4,8 @@
 
 React-based JSON inspector that features tree expansion and fast search.
 
+[Live demo](https://lapple.github.io/react-json-inspector/)
+
 ### Installation
 
     npm install react-json-inspector
