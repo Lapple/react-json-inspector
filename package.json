@@ -15,13 +15,15 @@
   "license": "MIT",
   "dependencies": {
     "debounce": "1.0.0",
-    "object-assign": "2.0.0",
-    "react": "0.13.0"
+    "object-assign": "2.0.0"
   },
   "devDependencies": {
     "browserify": "^6.1.0",
     "http-server": "^0.7.2",
     "watchify": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": "^0.13.0"
   },
   "keywords": [
     "react-component"
