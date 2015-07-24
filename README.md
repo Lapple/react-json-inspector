@@ -68,3 +68,9 @@ Defaults to `(query) => query.length >= 2`.
 Optional predicate that can determine whether the leaf node should be expanded
 on initial render. Receives two arguments: `keypath` and `value`. Defaults to
 `(keypath, query) => false`.
+
+#### props.filterOptions
+
+Optional parameters for filterer (search). Must be an object.
+
+- `ignoreCase`, Set to `true` to enable case insensitivity in search. Defaults to `false`.

@@ -12,6 +12,15 @@ var lens = require('./lib/lens');
 var noop = require('./lib/noop');
 
 module.exports = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired,
+        search: React.PropTypes.component,
+        onClick: React.PropTypes.func,
+        validateQuery: React.PropTypes.func,
+        isExpanded: React.PropTypes.func,
+        filterOptions: React.PropTypes.object
+    },
+
     getDefaultProps: function() {
         return {
             data: null,
@@ -19,6 +28,7 @@ module.exports = React.createClass({
             className: '',
             id: 'json-' + Date.now(),
             onClick: noop,
+            filterOptions: {},
             validateQuery: function(query) {
                 return query.length >= 2;
             },
@@ -79,19 +89,19 @@ module.exports = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.createFilterer(this.props.data);
+        this.createFilterer(this.props.data, this.props.filterOptions);
     },
     componentWillReceiveProps: function(p) {
-        this.createFilterer(p.data);
+        this.createFilterer(p.data, p.filterOptions);
     },
     shouldComponentUpdate: function (p, s) {
         return s.query !== this.state.query ||
             p.data !== this.props.data ||
             p.onClick !== this.props.onClick;
     },
-    createFilterer: function(data) {
+    createFilterer: function(data, options) {
         this.setState({
-            filterer: filterer(data)
+            filterer: filterer(data, options)
         });
     },
     getOriginal: function(path) {
