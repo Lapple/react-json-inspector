@@ -14,7 +14,7 @@ var noop = require('./lib/noop');
 module.exports = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
-        search: React.PropTypes.component,
+        search: React.PropTypes.element,
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
