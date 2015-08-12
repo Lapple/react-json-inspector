@@ -13,8 +13,12 @@ var noop = require('./lib/noop');
 
 module.exports = React.createClass({
     propTypes: {
-        data: React.PropTypes.object.isRequired,
-        search: React.PropTypes.element,
+        data: React.PropTypes.oneOfType([
+            React.PropTypes.object.isRequired,
+            React.PropTypes.array.isRequired,
+        ]),
+        // For now it expects a factory function, not element.
+        search: React.PropTypes.func,
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
