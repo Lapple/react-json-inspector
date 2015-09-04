@@ -18,25 +18,10 @@ module.exports = React.createClass({
             React.PropTypes.array.isRequired,
         ]),
         // For now it expects a factory function, not element.
-        search: function(props, propName, componentName) {
-          componentName = componentName || '<<ANONYMOUS>>';
-          var propValue = props[propName];
-          if (typeof propValue === 'boolean') {
-            if (propValue) {
-              throw Error(
-                'Invalid prop `' + propName + '` with value ' +
-                '`' + propValue + '` ' +
-                'supplied to `' + componentName + '`, ' +
-                'expected `function` or `false`.');
-            }
-          } else if (typeof propValue !== 'function') {
-            throw Error(
-              'Invalid prop `' + propName + '` of type ' +
-              '`' + typeof propValue + '` ' +
-              'supplied to `' + componentName + '`, ' +
-              'expected `function` or `false`.');
-          }
-        },
+        search: React.PropTypes.oneOfType([
+            React.PropTypes.func,
+            React.PropTypes.bool,
+        ]),
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
