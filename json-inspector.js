@@ -20,7 +20,7 @@ module.exports = React.createClass({
         // For now it expects a factory function, not element.
         search: React.PropTypes.oneOfType([
             React.PropTypes.func,
-            React.PropTypes.bool,
+            React.PropTypes.bool
         ]),
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
