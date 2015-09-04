@@ -15,7 +15,7 @@ module.exports = React.createClass({
     propTypes: {
         data: React.PropTypes.oneOfType([
             React.PropTypes.object.isRequired,
-            React.PropTypes.array.isRequired,
+            React.PropTypes.array.isRequired
         ]),
         // For now it expects a factory function, not element.
         search: React.PropTypes.oneOfType([
