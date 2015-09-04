@@ -18,7 +18,10 @@ module.exports = React.createClass({
             React.PropTypes.array.isRequired,
         ]),
         // For now it expects a factory function, not element.
-        search: React.PropTypes.func,
+        search: React.PropTypes.oneOfType([
+            React.PropTypes.func,
+            React.PropTypes.bool,
+        ]),
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
