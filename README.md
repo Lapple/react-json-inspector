@@ -28,10 +28,6 @@ override or amend default styles, for instance, when using a dark background.
 ### Run the example
 
 ```bash
-npm install -g browserify watchify
-```
-
-```bash
 cd /path/to/project
 npm install
 npm run watch
