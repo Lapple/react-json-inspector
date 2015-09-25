@@ -14,8 +14,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "crypto": "0.0.3",
     "debounce": "1.0.0",
+    "md5-o-matic": "^0.1.1",
     "object-assign": "2.0.0"
   },
   "devDependencies": {
