@@ -1,14 +1,15 @@
-var React = require('react');
+var render = require('react-dom').render;
+var createFactory = require('react').createFactory;
 
 var Inspector = require('..');
-var inspector = React.createFactory(Inspector);
+var inspector = createFactory(Inspector);
 var InteractiveSelection = require('./interactive-selection');
-var interactiveSelection = React.createFactory(InteractiveSelection);
+var interactiveSelection = createFactory(InteractiveSelection);
 
 var data = require('./data.json');
 
 document.addEventListener('DOMContentLoaded', function() {
-    React.render(
+    render(
         inspector({
             data: data,
             onClick: console.log.bind(console),
