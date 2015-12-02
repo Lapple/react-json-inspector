@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
         inspector({
             data: data,
             onClick: console.log.bind(console),
-            interactiveLabel: interactiveSelection
+            interactiveLabel: interactiveSelection,
+            rootExpanded: false,
+            showRootLabel: true,
+            rootLabel: 'root label'
         }),
         document.getElementById('inspector')
     );
