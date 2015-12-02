@@ -25,7 +25,10 @@ module.exports = React.createClass({
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
-        filterOptions: React.PropTypes.object
+        filterOptions: React.PropTypes.object,
+        rootExpanded: React.PropTypes.bool,
+        showRootLabel: React.PropTypes.bool,
+        rootLabel: React.PropTypes.string
     },
 
     getDefaultProps: function() {
@@ -48,7 +51,10 @@ module.exports = React.createClass({
              */
             isExpanded: function(keypath, value) {
                 return false;
-            }
+            },
+            rootExpanded: true,
+            showRootLabel: true,
+            rootLabel: 'root'
         };
     },
     getInitialState: function() {
@@ -68,8 +74,10 @@ module.exports = React.createClass({
             id: p.id,
             getOriginal: this.getOriginal,
             query: s.query,
-            label: 'root',
+            label: p.rootLabel,
             root: true,
+            rootExpanded: p.rootExpanded,
+            showRootLabel: p.showRootLabel,
             isExpanded: p.isExpanded,
             interactiveLabel: p.interactiveLabel
         });

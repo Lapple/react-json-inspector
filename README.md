@@ -84,3 +84,15 @@ on initial render. Receives two arguments: `keypath` and `value`. Defaults to
 Optional parameters for filterer (search). Must be an object.
 
 - `ignoreCase`, Set to `true` to enable case insensitivity in search. Defaults to `false`.
+
+#### props.rootExpanded
+
+Optional boolean to expand the root object. Defaults to true.
+
+#### props.showRootLabel
+
+Optional boolean to show the root label. Defaults to true.
+
+#### props.rootLabel
+
+Optional string for the root label. Defaults to root.
