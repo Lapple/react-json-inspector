@@ -13,10 +13,7 @@ var noop = require('./lib/noop');
 
 module.exports = React.createClass({
     propTypes: {
-        data: React.PropTypes.oneOfType([
-            React.PropTypes.object.isRequired,
-            React.PropTypes.array.isRequired
-        ]),
+        data: React.PropTypes.any.isRequired,
         // For now it expects a factory function, not element.
         search: React.PropTypes.oneOfType([
             React.PropTypes.func,
@@ -72,27 +69,33 @@ module.exports = React.createClass({
                 p.data
         );
 
-        var rootNode = leaf({
-            data: data,
-            onClick: p.onClick,
-            id: p.id,
-            getOriginal: this.getOriginal,
-            query: (
-                isQueryValid ?
-                    s.query :
-                    null
-            ),
-            label: 'root',
-            root: true,
-            isExpanded: p.isExpanded,
-            interactiveLabel: p.interactiveLabel
-        });
-
-        var notFound = D.div({ className: 'json-inspector__not-found' }, 'Nothing found');
+        var isNotFound = (
+            isQueryValid &&
+            isEmpty(data)
+        );
 
         return D.div({ className: 'json-inspector ' + p.className },
             this.renderToolbar(),
-            isEmpty(data) ? notFound : rootNode);
+            (
+                isNotFound ?
+                    D.div({ className: 'json-inspector__not-found' }, 'Nothing found') :
+                    leaf({
+                        data: data,
+                        onClick: p.onClick,
+                        id: p.id,
+                        getOriginal: this.getOriginal,
+                        query: (
+                            isQueryValid ?
+                                s.query :
+                                null
+                        ),
+                        label: 'root',
+                        root: true,
+                        isExpanded: p.isExpanded,
+                        interactiveLabel: p.interactiveLabel
+                    })
+            )
+        );
     },
     renderToolbar: function() {
         var search = this.props.search;
