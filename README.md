@@ -47,8 +47,12 @@ The class name to be added to the root component element.
 
 #### props.search
 
-Search bar component that accepts `onChange` and `data` properties. Defaults
-to built-in search bar. Pass `false` to disable search.
+Search bar component that accepts `onChange`, `data` and `query` properties.
+Defaults to built-in search bar. Pass `false` to disable search.
+
+#### props.query
+
+Optional initial search query, defaults to an empty string.
 
 #### props.interactiveLabel
 

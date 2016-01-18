@@ -25,7 +25,8 @@ module.exports = React.createClass({
         onClick: React.PropTypes.func,
         validateQuery: React.PropTypes.func,
         isExpanded: React.PropTypes.func,
-        filterOptions: React.PropTypes.object
+        filterOptions: React.PropTypes.object,
+        query: React.PropTypes.string
     },
 
     getDefaultProps: function() {
@@ -53,21 +54,34 @@ module.exports = React.createClass({
     },
     getInitialState: function() {
         return {
-            query: ''
+            query: this.props.query || ''
         };
     },
     render: function() {
         var p = this.props;
         var s = this.state;
 
-        var data = s.query ? s.filterer(s.query) : p.data;
+        var isQueryValid = (
+            s.query !== '' &&
+            p.validateQuery(s.query)
+        );
+
+        var data = (
+            isQueryValid ?
+                s.filterer(s.query) :
+                p.data
+        );
 
         var rootNode = leaf({
             data: data,
             onClick: p.onClick,
             id: p.id,
             getOriginal: this.getOriginal,
-            query: s.query,
+            query: (
+                isQueryValid ?
+                    s.query :
+                    null
+            ),
             label: 'root',
             root: true,
             isExpanded: p.isExpanded,
@@ -85,26 +99,31 @@ module.exports = React.createClass({
 
         if (search) {
             return D.div({ className: 'json-inspector__toolbar' },
-                search({ onChange: this.search, data: this.props.data }));
+                search({
+                    onChange: this.search,
+                    data: this.props.data,
+                    query: this.state.query
+                })
+            );
         }
     },
     search: function(query) {
-        if (query === '' || this.props.validateQuery(query)) {
-            this.setState({
-                query: query
-            });
-        }
+        this.setState({
+            query: query
+        });
     },
-    componentDidMount: function() {
+    componentWillMount: function() {
         this.createFilterer(this.props.data, this.props.filterOptions);
     },
     componentWillReceiveProps: function(p) {
         this.createFilterer(p.data, p.filterOptions);
     },
     shouldComponentUpdate: function (p, s) {
-        return s.query !== this.state.query ||
+        return (
+            s.query !== this.state.query ||
             p.data !== this.props.data ||
-            p.onClick !== this.props.onClick;
+            p.onClick !== this.props.onClick
+        );
     },
     createFilterer: function(data, options) {
         this.setState({
