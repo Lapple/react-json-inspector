@@ -120,9 +120,16 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function(p) {
         this.createFilterer(p.data, p.filterOptions);
+
+        if (p.query !== this.state.query) {
+            this.setState({
+                query: p.query
+            });
+        }
     },
     shouldComponentUpdate: function (p, s) {
         return (
+            p.query !== this.props.query ||
             s.query !== this.state.query ||
             p.data !== this.props.data ||
             p.onClick !== this.props.onClick
