@@ -121,7 +121,12 @@ module.exports = React.createClass({
     componentWillReceiveProps: function(p) {
         this.createFilterer(p.data, p.filterOptions);
 
-        if (p.query !== this.state.query) {
+        var isReceivingNewQuery = (
+            typeof p.query === 'string' &&
+            p.query !== this.state.query
+        );
+
+        if (isReceivingNewQuery) {
             this.setState({
                 query: p.query
             });
