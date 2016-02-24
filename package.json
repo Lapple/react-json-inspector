@@ -1,16 +1,15 @@
 {
-  "name": "react-json-inspector",
-  "version": "6.1.1",
+  "name": "demisto-react-json-inspector",
+  "version": "6.1.2",
   "description": "React JSON inspector component",
   "main": "json-inspector.js",
   "author": {
-    "name": "Aziz Yuldoshev",
-    "email": "yuldoshev.aziz@gmail.com",
-    "url": "http://lapple.me"
+    "name": "Aviad Lichtenstadt",
+    "email": "aviad.lich@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Lapple/react-json-inspector.git"
+    "url": "git://github.com/aviadl/react-json-inspector.git"
   },
   "license": "MIT",
   "dependencies": {
