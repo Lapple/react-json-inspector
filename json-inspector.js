@@ -26,7 +26,8 @@ module.exports = React.createClass({
         filterOptions: React.PropTypes.object,
         query: React.PropTypes.string,
         filterFunc: React.PropTypes.func,
-        shouldHighlight: React.PropTypes.func
+        shouldHighlight: React.PropTypes.func,
+        highlightRenderer: React.PropTypes.func
     },
 
     getDefaultProps: function() {
@@ -49,7 +50,8 @@ module.exports = React.createClass({
              */
             isExpanded: function(keypath, value) {
                 return false;
-            }
+            },
+            highlightRenderer: null
         };
     },
     getInitialState: function() {
@@ -98,6 +100,7 @@ module.exports = React.createClass({
                   isExpanded: p.isExpanded,
                   interactiveLabel: p.interactiveLabel,
                   shouldHighlight: p.shouldHighlight,
+                  highlightRenderer: p.highlightRenderer,
               })
           )
         );
@@ -125,6 +128,7 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function(p) {
         this.createFilterer(p.data, p.filterOptions, p.filterFunc);
+        this.setState({query: p.query});
     },
     shouldComponentUpdate: function (p, s) {
         return (
