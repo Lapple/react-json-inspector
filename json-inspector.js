@@ -86,7 +86,10 @@ module.exports = React.createClass({
                         getOriginal: this.getOriginal,
                         query: (
                             isQueryValid ?
-                                s.query :
+                                new RegExp(
+                                        s.query,
+                                        (p.filterOptions.ignoreCase ? 'i' : '')
+                                ) :
                                 null
                         ),
                         label: 'root',
