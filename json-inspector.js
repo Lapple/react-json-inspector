@@ -1,4 +1,5 @@
 var React = require('react');
+var PropTypes = require('prop-types');
 var D = React.DOM;
 
 var Leaf = require('./lib/leaf');
@@ -11,50 +12,15 @@ var isEmpty = require('./lib/is-empty');
 var lens = require('./lib/lens');
 var noop = require('./lib/noop');
 
-module.exports = React.createClass({
-    propTypes: {
-        data: React.PropTypes.any.isRequired,
-        // For now it expects a factory function, not element.
-        search: React.PropTypes.oneOfType([
-            React.PropTypes.func,
-            React.PropTypes.bool
-        ]),
-        onClick: React.PropTypes.func,
-        validateQuery: React.PropTypes.func,
-        isExpanded: React.PropTypes.func,
-        filterOptions: React.PropTypes.object,
-        query: React.PropTypes.string
-    },
+class JsonInspector extends React.Component {
 
-    getDefaultProps: function() {
-        return {
-            data: null,
-            search: searchBar,
-            className: '',
-            id: 'json-' + Date.now(),
-            onClick: noop,
-            filterOptions: {},
-            validateQuery: function(query) {
-                return query.length >= 2;
-            },
-            /**
-             * Decide whether the leaf node at given `keypath` should be
-             * expanded initially.
-             * @param  {String} keypath
-             * @param  {Any} value
-             * @return {Boolean}
-             */
-            isExpanded: function(keypath, value) {
-                return false;
-            }
-        };
-    },
-    getInitialState: function() {
-        return {
-            query: this.props.query || ''
-        };
-    },
-    render: function() {
+    constructor(props)  {
+        super(props);
+        this.state = { query: props.query };
+        this.search = this.search.bind( this );
+    }
+
+    render() {
         var p = this.props;
         var s = this.state;
 
@@ -96,8 +62,9 @@ module.exports = React.createClass({
                     })
             )
         );
-    },
-    renderToolbar: function() {
+    }
+
+    renderToolbar() {
         var search = this.props.search;
 
         if (search) {
@@ -109,16 +76,19 @@ module.exports = React.createClass({
                 })
             );
         }
-    },
-    search: function(query) {
+    };
+
+    search(query) {
         this.setState({
             query: query
         });
-    },
-    componentWillMount: function() {
+    };
+
+    componentWillMount() {
         this.createFilterer(this.props.data, this.props.filterOptions);
-    },
-    componentWillReceiveProps: function(p) {
+    }
+
+    componentWillReceiveProps(p) {
         this.createFilterer(p.data, p.filterOptions);
 
         var isReceivingNewQuery = (
@@ -131,21 +101,63 @@ module.exports = React.createClass({
                 query: p.query
             });
         }
-    },
-    shouldComponentUpdate: function (p, s) {
+    }
+
+    shouldComponentUpdate(p, s) {
         return (
             p.query !== this.props.query ||
             s.query !== this.state.query ||
             p.data !== this.props.data ||
             p.onClick !== this.props.onClick
         );
-    },
-    createFilterer: function(data, options) {
+    }
+
+    createFilterer(data, options) {
         this.setState({
             filterer: filterer(data, options)
         });
-    },
-    getOriginal: function(path) {
+    };
+
+    getOriginal(path){
         return lens(this.props.data, path);
-    }
-});
+    };
+};
+
+JsonInspector.propTypes = {
+    data: PropTypes.any.isRequired,
+    // For now it expects a factory function, not element.
+    search: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.bool
+    ]),
+    onClick: PropTypes.func,
+    validateQuery: PropTypes.func,
+    isExpanded: PropTypes.func,
+    filterOptions: PropTypes.object,
+    query: PropTypes.string
+};
+
+JsonInspector.defaultProps = {
+    data: null,
+    search: searchBar,
+    className: '',
+    id: 'json-' + Date.now(),
+    onClick: noop,
+    filterOptions: {},
+    validateQuery: function(query) {
+        return query.length >= 2;
+    },
+    /**
+     * Decide whether the leaf node at given `keypath` should be
+     * expanded initially.
+     * @param  {String} keypath
+     * @param  {Any} value
+     * @return {Boolean}
+     */
+    isExpanded: function(keypath, value) {
+        return false;
+    },
+    query: ''
+};
+
+module.exports = JsonInspector;
