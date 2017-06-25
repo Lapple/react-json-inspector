@@ -1,35 +1,35 @@
 var React = require('react');
-var D = React.DOM;
+var createReactClass = require('create-react-class');
+var PropTypes = require('prop-types');
 
+var h = React.createElement;
 var Leaf = require('./lib/leaf');
-var leaf = React.createFactory(Leaf);
 var SearchBar = require('./lib/search-bar');
-var searchBar = React.createFactory(SearchBar);
 
 var filterer = require('./lib/filterer');
 var isEmpty = require('./lib/is-empty');
 var lens = require('./lib/lens');
 var noop = require('./lib/noop');
 
-module.exports = React.createClass({
+module.exports = createReactClass({
     propTypes: {
-        data: React.PropTypes.any.isRequired,
+        data: PropTypes.any.isRequired,
         // For now it expects a factory function, not element.
-        search: React.PropTypes.oneOfType([
-            React.PropTypes.func,
-            React.PropTypes.bool
+        search: PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.bool
         ]),
-        onClick: React.PropTypes.func,
-        validateQuery: React.PropTypes.func,
-        isExpanded: React.PropTypes.func,
-        filterOptions: React.PropTypes.object,
-        query: React.PropTypes.string
+        onClick: PropTypes.func,
+        validateQuery: PropTypes.func,
+        isExpanded: PropTypes.func,
+        filterOptions: PropTypes.object,
+        query: PropTypes.string
     },
 
     getDefaultProps: function() {
         return {
             data: null,
-            search: searchBar,
+            search: SearchBar,
             className: '',
             id: 'json-' + Date.now(),
             onClick: noop,
@@ -74,12 +74,12 @@ module.exports = React.createClass({
             isEmpty(data)
         );
 
-        return D.div({ className: 'json-inspector ' + p.className },
+        return h('div', { className: 'json-inspector ' + p.className },
             this.renderToolbar(),
             (
                 isNotFound ?
-                    D.div({ className: 'json-inspector__not-found' }, 'Nothing found') :
-                    leaf({
+                    h('div', { className: 'json-inspector__not-found' }, 'Nothing found') :
+                    h(Leaf, {
                         data: data,
                         onClick: p.onClick,
                         id: p.id,
@@ -104,8 +104,8 @@ module.exports = React.createClass({
         var search = this.props.search;
 
         if (search) {
-            return D.div({ className: 'json-inspector__toolbar' },
-                search({
+            return h('div', { className: 'json-inspector__toolbar' },
+                h(search, {
                     onChange: this.search,
                     data: this.props.data,
                     query: this.state.query
