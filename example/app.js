@@ -1,19 +1,18 @@
+var React = require('react');
 var render = require('react-dom').render;
-var createFactory = require('react').createFactory;
 
 var Inspector = require('..');
-var inspector = createFactory(Inspector);
 var InteractiveSelection = require('./interactive-selection');
-var interactiveSelection = createFactory(InteractiveSelection);
 
+var h = React.createElement;
 var data = require('./data.json');
 
 document.addEventListener('DOMContentLoaded', function() {
     render(
-        inspector({
+        h(Inspector, {
             data: data,
             onClick: console.log.bind(console),
-            interactiveLabel: interactiveSelection
+            interactiveLabel: InteractiveSelection
         }),
         document.getElementById('inspector')
     );
