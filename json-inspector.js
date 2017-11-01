@@ -1,6 +1,7 @@
 var React = require('react');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+var debounce = require('debounce');
 
 var h = React.createElement;
 var Leaf = require('./lib/leaf');
@@ -19,21 +20,33 @@ module.exports = createReactClass({
             PropTypes.func,
             PropTypes.bool
         ]),
+        searchOptions: PropTypes.shape({
+            debounceTime: PropTypes.number
+        }),
         onClick: PropTypes.func,
         validateQuery: PropTypes.func,
         isExpanded: PropTypes.func,
-        filterOptions: PropTypes.object,
-        query: PropTypes.string
+        filterOptions: PropTypes.shape({
+            cacheResults: PropTypes.bool,
+            ignoreCase: PropTypes.bool
+        }),
+        query: PropTypes.string,
+        verboseShowOriginal: PropTypes.bool
     },
-
     getDefaultProps: function() {
         return {
             data: null,
             search: SearchBar,
+            searchOptions: {
+                debounceTime: 300
+            },
             className: '',
             id: 'json-' + Date.now(),
             onClick: noop,
-            filterOptions: {},
+            filterOptions: {
+                cacheResults: true,
+                ignoreCase: false
+            },
             validateQuery: function(query) {
                 return query.length >= 2;
             },
@@ -46,7 +59,8 @@ module.exports = createReactClass({
              */
             isExpanded: function(keypath, value) {
                 return false;
-            }
+            },
+            verboseShowOriginal: false
         };
     },
     getInitialState: function() {
@@ -95,7 +109,8 @@ module.exports = createReactClass({
                         label: 'root',
                         root: true,
                         isExpanded: p.isExpanded,
-                        interactiveLabel: p.interactiveLabel
+                        interactiveLabel: p.interactiveLabel,
+                        verboseShowOriginal: p.verboseShowOriginal
                     })
             )
         );
@@ -106,7 +121,7 @@ module.exports = createReactClass({
         if (search) {
             return h('div', { className: 'json-inspector__toolbar' },
                 h(search, {
-                    onChange: this.search,
+                    onChange: debounce(this.search, this.props.searchOptions.debounceTime),
                     data: this.props.data,
                     query: this.state.query
                 })

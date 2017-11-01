@@ -50,6 +50,12 @@ The class name to be added to the root component element.
 Search bar component that accepts `onChange`, `data` and `query` properties.
 Defaults to built-in search bar. Pass `false` to disable search.
 
+#### props.searchOptions
+
+Optional parameters for search (toolbar). Must be an object.
+
+- `debounceTime`, wait time (ms) between search field `onChange` events before actually performing search. This can help provide a better user experience when searching larger data sets. Defaults to `300`.
+
 #### props.query
 
 Optional initial search query, defaults to an empty string.
@@ -87,4 +93,9 @@ on initial render. Receives two arguments: `keypath` and `value`. Defaults to
 
 Optional parameters for filterer (search). Must be an object.
 
+- `cacheResults`, Set to `false` to disable the filterer cache. This can sometimes provide performance enhancements with larger data sets. Defaults to `true`.
 - `ignoreCase`, Set to `true` to enable case insensitivity in search. Defaults to `false`.
+
+#### props.verboseShowOriginal
+
+Set to `true` for full `showOriginal` expansion of children containing search term. Defaults to `false`.
