@@ -38,7 +38,7 @@ module.exports = createReactClass({
             data: null,
             search: SearchBar,
             searchOptions: {
-                debounceTime: 300
+                debounceTime: 0
             },
             className: '',
             id: 'json-' + Date.now(),

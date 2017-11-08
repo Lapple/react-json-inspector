@@ -54,7 +54,7 @@ Defaults to built-in search bar. Pass `false` to disable search.
 
 Optional parameters for search (toolbar). Must be an object.
 
-- `debounceTime`, wait time (ms) between search field `onChange` events before actually performing search. This can help provide a better user experience when searching larger data sets. Defaults to `300`.
+- `debounceTime`, wait time (ms) between search field `onChange` events before actually performing search. This can help provide a better user experience when searching larger data sets. Defaults to `0`.
 
 #### props.query
 
