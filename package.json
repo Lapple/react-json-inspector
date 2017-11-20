@@ -1,11 +1,10 @@
 {
-  "name": "generic-react-json-inspector",
-  "version": "6.1.4",
+  "name": "react-json-inspector-demisto",
+  "version": "1.0.0",
   "description": "React JSON inspector component",
   "main": "json-inspector.js",
   "author": {
-    "name": "Aviad Lichtenstadt",
-    "email": "aviad.lich@gmail.com"
+    "name": "Demisto"
   },
   "repository": {
     "type": "git",
@@ -20,11 +19,12 @@
   "devDependencies": {
     "browserify": "^6.1.0",
     "http-server": "^0.7.2",
-    "react-dom": "^0.14.0",
     "watchify": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^16.1.1",
+    "prop-types": "^15.6.0",
+    "create-react-class": "^15.6.2"
   },
   "keywords": [
     "react-component"

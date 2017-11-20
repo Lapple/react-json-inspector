@@ -1,5 +1,6 @@
 var React = require('react');
-var D = React.DOM;
+var PropTypes = require('prop-types');
+var createClass = require('create-react-class');
 
 var Leaf = require('./lib/leaf');
 var leaf = React.createFactory(Leaf);
@@ -11,23 +12,23 @@ var isEmpty = require('./lib/is-empty');
 var lens = require('./lib/lens');
 var noop = require('./lib/noop');
 
-module.exports = React.createClass({
+module.exports = createClass({
   propTypes: {
-    data: React.PropTypes.any.isRequired,
+    data: PropTypes.any.isRequired,
     // For now it expects a factory function, not element.
-    search: React.PropTypes.oneOfType([
-      React.PropTypes.func,
-      React.PropTypes.bool
+    search: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.bool
     ]),
-    onClick: React.PropTypes.func,
-    validateQuery: React.PropTypes.func,
-    isExpanded: React.PropTypes.func,
-    isRootCollapsed: React.PropTypes.bool,
-    filterOptions: React.PropTypes.object,
-    query: React.PropTypes.string,
-    filterFunc: React.PropTypes.func,
-    shouldHighlight: React.PropTypes.func,
-    highlightRenderer: React.PropTypes.func
+    onClick: PropTypes.func,
+    validateQuery: PropTypes.func,
+    isExpanded: PropTypes.func,
+    isRootCollapsed: PropTypes.bool,
+    filterOptions: PropTypes.object,
+    query: PropTypes.string,
+    filterFunc: PropTypes.func,
+    shouldHighlight: PropTypes.func,
+    highlightRenderer: PropTypes.func
   },
 
   getDefaultProps: function() {
@@ -74,11 +75,11 @@ module.exports = React.createClass({
       isEmpty(data)
     );
 
-    return D.div({ className: 'json-inspector ' + p.className },
+    return React.createElement('div', { className: 'json-inspector ' + p.className },
       this.renderToolbar(),
       (
         isNotFound ?
-          D.div({ className: 'json-inspector__not-found' }, 'Nothing found') :
+          React.createElement('div', { className: 'json-inspector__not-found' }, 'Nothing found') :
           leaf({
             data: data,
             onClick: p.onClick,
@@ -104,7 +105,7 @@ module.exports = React.createClass({
     var search = this.props.search;
 
     if (search) {
-      return D.div({ className: 'json-inspector__toolbar' },
+      return React.createElement('div', { className: 'json-inspector__toolbar' },
         search({
           onChange: this.search,
           data: this.props.data,

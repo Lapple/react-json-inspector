@@ -1,7 +1,8 @@
 var React = require('react');
-var input = React.DOM.input;
+var input = React.createElement('input');
+var createClass = require('create-react-class');
 
-module.exports = React.createClass({
+module.exports = createClass({
     getDefaultProps: function() {
         return {
             value: ''
