@@ -12,9 +12,9 @@ React-based JSON inspector that features tree expansion and fast search.
 
 ### Usage
 
-```jsx
-var Inspector = require('react-json-inspector');
-var data = { /* ... */ };
+```js
+import Inspector from 'react-json-inspector';
+const data = { /* ... */ };
 
 React.render(
     <Inspector data={ data } />,
