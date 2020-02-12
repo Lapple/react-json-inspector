@@ -133,10 +133,10 @@ module.exports = createReactClass({
             query: query
         });
     },
-    componentWillMount: function() {
+    UNSAFE_componentWillMount: function() {
         this.createFilterer(this.props.data, this.props.filterOptions);
     },
-    componentWillReceiveProps: function(p) {
+    UNSAFE_componentWillReceiveProps: function(p) {
         this.createFilterer(p.data, p.filterOptions);
 
         var isReceivingNewQuery = (
