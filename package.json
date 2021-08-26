@@ -47,7 +47,7 @@
     "react-dom": "global:ReactDOM"
   },
   "scripts": {
-    "browserify": "browserify ./json-inspector.js --standalone reactJsonInspector -o ./dist/reactJsonInspector.js",
+    "browserify": "browserify ./json-inspector.js --standalone ReactJsonInspector -o ./dist/reactJsonInspector.js",
     "test": "mocha test/**/*-spec.js",
     "server": "http-server .",
     "watch": "watchify example/app.js -o example/app.compiled.js -v"
