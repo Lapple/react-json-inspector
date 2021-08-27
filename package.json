@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "browserify": "^6.1.0",
+    "browserify-shim": "^3.8.14",
     "chai": "3.5.0",
     "enzyme": "^2.9.1",
     "http-server": "^0.7.2",
@@ -38,7 +39,15 @@
   "keywords": [
     "react-component"
   ],
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browserify-shim": {
+    "react": "global:React",
+    "react-dom": "global:ReactDOM"
+  },
   "scripts": {
+    "browserify": "browserify ./json-inspector.js --standalone ReactJsonInspector -o ./dist/reactJsonInspector.js",
     "test": "mocha test/**/*-spec.js",
     "server": "http-server .",
     "watch": "watchify example/app.js -o example/app.compiled.js -v"
